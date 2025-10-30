@@ -1,0 +1,10 @@
+/.venv
+/venv
+/.pytest_cache
+*.pyc
+__pycache__/
+*.sqlite3
+build/
+.DS_Store
+frontend_flutter/build/
+backend_django/db.sqlite3

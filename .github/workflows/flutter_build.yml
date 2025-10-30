@@ -43,6 +43,8 @@ jobs:
       - name: Flutter pub get (frontend)
         run: |
           cd frontend_flutter
+          # Ensure Flutter project structure is valid for CI builds (creates missing Android/iOS wrappers if needed)
+          flutter create . || true
           flutter pub get
 
       - name: Build release APK (frontend)

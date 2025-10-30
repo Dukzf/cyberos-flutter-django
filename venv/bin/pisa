@@ -1,0 +1,7 @@
+#!/Users/eduardofelix/Desktop/CYBEROS_LATEST/CyberOS_rev1.1.8./CyberOS_rev11/venv/bin/python3
+import sys
+from xhtml2pdf.pisa import command
+if __name__ == '__main__':
+    if sys.argv[0].endswith('.exe'):
+        sys.argv[0] = sys.argv[0][:-4]
+    sys.exit(command())

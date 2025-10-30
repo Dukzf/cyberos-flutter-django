@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Novo Produto - CybersOS{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="mb-2"><i class="fas fa-plus-circle me-2"></i> Novo Produto</h1>
+        <p class="text-muted">Cadastre um novo item no estoque.</p>
+    </div>
+    <div>
+        <a href="{% url 'listar_produtos' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Voltar para Estoque
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-pencil-alt me-2"></i> Informações do Produto
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="codigo" class="form-label">Código *</label>
+                    <input type="text" class="form-control" id="codigo" name="codigo" required>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label for="nome" class="form-label">Nome *</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <div class="input-group categoria-input-group">
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="">---------</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" class="btn btn-outline-secondary" id="btnNovaCategoriaProduto" data-bs-toggle="modal" data-bs-target="#modalNovaCategoriaProduto">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="unidade" class="form-label">Unidade *</label>
+                    <div class="input-group unidade-input-group">
+                        <select class="form-select" id="unidade" name="unidade" required>
+                            <option value="">---------</option>
+                            {% for unidade_obj in unidades %}
+                                <option value="{{ unidade_obj.id }}">{{ unidade_obj.nome }} ({{ unidade_obj.sigla }})</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" class="btn btn-outline-secondary" id="btnNovaUnidadeProduto" data-bs-toggle="modal" data-bs-target="#modalNovaUnidadeProduto">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="preco_custo" class="form-label">Preço de Custo *</label>
+                    <input type="text" class="form-control" id="preco_custo" name="preco_custo" placeholder="0,00" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="preco_venda" class="form-label">Preço de Venda *</label>
+                    <input type="text" class="form-control" id="preco_venda" name="preco_venda" placeholder="0,00" required>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="estoque_atual" class="form-label">Estoque Inicial *</label>
+                    <input type="number" class="form-control" id="estoque_atual" name="estoque_atual" value="0" min="0" required>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="estoque_minimo" class="form-label">Estoque Mínimo *</label>
+                    <input type="number" class="form-control" id="estoque_minimo" name="estoque_minimo" value="1" min="0" required>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i> Salvar Produto
+                </button>
+                <a href="{% url 'listar_produtos' %}" class="btn btn-secondary ms-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modals para criar categoria e unidade inline -->
+<!-- Modal Nova Categoria -->
+<div class="modal fade" id="modalNovaCategoriaProduto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Categoria</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNovaCategoriaProduto">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nova_categoria_nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nova_categoria_nome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nova_categoria_descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="nova_categoria_descricao" name="descricao" rows="2"></textarea>
+                    </div>
+                </form>
+                <div id="nova-categoria-alert" class="d-none alert" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvarCategoriaProduto">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nova Unidade -->
+<div class="modal fade" id="modalNovaUnidadeProduto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Unidade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNovaUnidadeProduto">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nova_unidade_nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nova_unidade_nome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nova_unidade_sigla" class="form-label">Sigla</label>
+                        <input type="text" class="form-control" id="nova_unidade_sigla" name="sigla" required>
+                    </div>
+                </form>
+                <div id="nova-unidade-alert" class="d-none alert" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvarUnidadeProduto">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} Unified JS handlers: run after DOM ready, handle CSRF, update selects and close modals {% endcomment %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function safeJson(response) {
+        const ct = response.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') !== -1) return response.json();
+        return response.text().then(t => { throw new Error('Resposta inesperada do servidor: ' + t); });
+    }
+
+    // Categoria
+    const btnCategoria = document.getElementById('btnSalvarCategoriaProduto');
+    if (btnCategoria) {
+        btnCategoria.addEventListener('click', function () {
+            const nome = document.getElementById('nova_categoria_nome').value.trim();
+            const descricao = document.getElementById('nova_categoria_descricao').value.trim();
+            const alertEl = document.getElementById('nova-categoria-alert');
+            if (!nome) { if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent='Nome é obrigatório.'; alertEl.classList.remove('d-none'); } return; }
+            btnCategoria.disabled = true;
+            fetch('{% url "criar_categoria_produto_ajax" %}', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: new URLSearchParams({ nome: nome, descricao: descricao })
+            }).then(function(r){ if (!r.ok) throw new Error('Status HTTP '+r.status); return safeJson(r); })
+            .then(function(data){
+                if (data.success) {
+                    const select = document.getElementById('categoria');
+                    if (select) {
+                        const opt = document.createElement('option'); opt.value = data.categoria.id; opt.textContent = data.categoria.nome; select.appendChild(opt); select.value = data.categoria.id;
+                        try { select.dispatchEvent(new Event('change', { bubbles: true })); } catch(e){}
+                        try { if (window.jQuery && jQuery(select).data && jQuery(select).data('select2')) jQuery(select).trigger('change'); } catch(e){}
+                    }
+                    try { const modal = bootstrap.Modal.getInstance(document.getElementById('modalNovaCategoriaProduto')); if (modal) modal.hide(); } catch(e){}
+                } else {
+                    if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent = data.message || 'Erro ao criar categoria.'; alertEl.classList.remove('d-none'); }
+                }
+            }).catch(function(err){ if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent=String(err); alertEl.classList.remove('d-none'); } })
+            .finally(function(){ btnCategoria.disabled = false; });
+        });
+    }
+
+    // Unidade
+    const btnUnidade = document.getElementById('btnSalvarUnidadeProduto');
+    if (btnUnidade) {
+        btnUnidade.addEventListener('click', function () {
+            const nome = document.getElementById('nova_unidade_nome').value.trim();
+            const sigla = document.getElementById('nova_unidade_sigla').value.trim();
+            const alertEl = document.getElementById('nova-unidade-alert');
+            if (!nome || !sigla) { if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent='Nome e sigla são obrigatórios.'; alertEl.classList.remove('d-none'); } return; }
+            btnUnidade.disabled = true;
+            fetch('{% url "criar_unidade_ajax" %}', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: new URLSearchParams({ nome: nome, sigla: sigla })
+            }).then(function(r){ if (!r.ok) throw new Error('Status HTTP '+r.status); return safeJson(r); })
+            .then(function(data){
+                if (data.success) {
+                    const select = document.getElementById('unidade');
+                    if (select) {
+                        const opt = document.createElement('option'); opt.value = data.unidade.id; opt.textContent = data.unidade.nome + ' (' + data.unidade.sigla + ')'; select.appendChild(opt); select.value = data.unidade.id;
+                        try { select.dispatchEvent(new Event('change', { bubbles: true })); } catch(e){}
+                        try { if (window.jQuery && jQuery(select).data && jQuery(select).data('select2')) jQuery(select).trigger('change'); } catch(e){}
+                    }
+                    try { const modal = bootstrap.Modal.getInstance(document.getElementById('modalNovaUnidadeProduto')); if (modal) modal.hide(); } catch(e){}
+                } else {
+                    if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent = data.message || 'Erro ao criar unidade.'; alertEl.classList.remove('d-none'); }
+                }
+            }).catch(function(err){ if (alertEl) { alertEl.className='alert alert-danger'; alertEl.textContent=String(err); alertEl.classList.remove('d-none'); } })
+            .finally(function(){ btnUnidade.disabled = false; });
+        });
+    }
+});
+</script>
+
+{% endblock %}

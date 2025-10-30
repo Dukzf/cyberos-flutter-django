@@ -1,0 +1,120 @@
+{
+    "clientes": [
+        {
+            "id": 1,
+            "nome": "Cliente A",
+            "cpf": "123.456.789-00",
+            "cnpj": null,
+            "telefone": "11 91234-5678",
+            "endereco": "Rua A",
+            "numero_endereco": "123",
+            "complemento": "Apto 1",
+            "bairro": "Bairro A",
+            "cidade": "Cidade A",
+            "estado": "SP",
+            "cep": "01234-567"
+        },
+        {
+            "id": 2,
+            "nome": "Cliente B",
+            "cpf": null,
+            "cnpj": "12.345.678/0001-90",
+            "telefone": "11 98765-4321",
+            "endereco": "Rua B",
+            "numero_endereco": "456",
+            "complemento": "",
+            "bairro": "Bairro B",
+            "cidade": "Cidade B",
+            "estado": "RJ",
+            "cep": "98765-432"
+        }
+    ],
+    "equipamentos": [
+        {
+            "id": 1,
+            "codigo": "EQ001",
+            "nome": "Equipamento A",
+            "marca": "Marca A",
+            "modelo": "Modelo A"
+        },
+        {
+            "id": 2,
+            "codigo": "EQ002",
+            "nome": "Equipamento B",
+            "marca": "Marca B",
+            "modelo": "Modelo B"
+        }
+    ],
+    "categorias": [
+        {
+            "id": 1,
+            "nome": "Manutenção"
+        },
+        {
+            "id": 2,
+            "nome": "Instalação"
+        }
+    ],
+    "tecnicos": [
+        {
+            "id": 1,
+            "nome_completo": "Técnico A"
+        },
+        {
+            "id": 2,
+            "nome_completo": "Técnico B"
+        }
+    ],
+    "ordens": [
+        {
+            "numero": "OS001",
+            "cliente": 1,
+            "equipamento": 1,
+            "categoria": 1,
+            "tecnico": 1,
+            "status": "aberta",
+            "prioridade": "media",
+            "data_agendamento": "2023-10-01T10:00",
+            "descricao": "Problema com o equipamento A.",
+            "solucao": "",
+            "endereco": "Rua A",
+            "numero_endereco": "123",
+            "complemento": "Apto 1",
+            "bairro": "Bairro A",
+            "cidade": "Cidade A",
+            "estado": "SP",
+            "cep": "01234-567",
+            "valor_servico": 100.00,
+            "valor_pecas": 50.00,
+            "valor_deslocamento": 20.00,
+            "desconto": 10.00,
+            "observacoes": "Urgente",
+            "interno": false
+        },
+        {
+            "numero": "OS002",
+            "cliente": 2,
+            "equipamento": 2,
+            "categoria": 2,
+            "tecnico": 2,
+            "status": "em_andamento",
+            "prioridade": "alta",
+            "data_agendamento": "2023-10-02T14:00",
+            "descricao": "Instalação do equipamento B.",
+            "solucao": "",
+            "endereco": "Rua B",
+            "numero_endereco": "456",
+            "complemento": "",
+            "bairro": "Bairro B",
+            "cidade": "Cidade B",
+            "estado": "RJ",
+            "cep": "98765-432",
+            "valor_servico": 200.00,
+            "valor_pecas": 0.00,
+            "valor_deslocamento": 30.00,
+            "desconto": 0.00,
+            "observacoes": "",
+            "interno": true
+        }
+    ]
+}

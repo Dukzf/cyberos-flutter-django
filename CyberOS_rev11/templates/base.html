@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CyberOS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'ordens/css/editar_ordem.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'listar_ordens' %}">Ordens</a></li>
+                <li><a href="{% url 'novo_cliente' %}">Novo Cliente</a></li>
+                <li><a href="{% url 'novo_equipamento' %}">Novo Equipamento</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 CyberOS. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="{% static 'ordens/js/editar_ordem.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

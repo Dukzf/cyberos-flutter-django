@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Preview Wallpaper - CyberOS</title>
+    <link rel="stylesheet" href="{% static 'css/login_wallpaper.css' %}">
+  </head>
+  <body class="cyberos-wallpaper">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="grid"></div>
+
+    <div class="preview-card">
+      <h2 style="margin:0 0 12px 0; color:#0b2440;">Bem-vindo ao CyberOS</h2>
+      <p style="margin:0 0 18px 0; color:#12314e;">Faça login para acessar o painel</p>
+      <form>
+        <input placeholder="Usuário" style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid rgba(0,0,0,0.08)">
+        <input placeholder="Senha" type="password" style="width:100%;padding:10px;margin-bottom:12px;border-radius:6px;border:1px solid rgba(0,0,0,0.08)">
+        <button style="width:100%;padding:10px;border-radius:8px;background:#0b3b75;color:white;border:none;">Entrar</button>
+      </form>
+      <p style="font-size:13px;color:#345; margin-top:12px">Versão de pré-visualização</p>
+    </div>
+  </body>
+</html>

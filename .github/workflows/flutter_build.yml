@@ -40,16 +40,20 @@ jobs:
         run: |
           yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Flutter pub get
-        run: flutter pub get
+      - name: Flutter pub get (frontend)
+        run: |
+          cd frontend_flutter
+          flutter pub get
 
-      - name: Build release APK
+      - name: Build release APK (frontend)
         env:
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
-        run: flutter build apk --release
+        run: |
+          cd frontend_flutter
+          flutter build apk --release
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: frontend_flutter/build/app/outputs/flutter-apk/app-release.apk

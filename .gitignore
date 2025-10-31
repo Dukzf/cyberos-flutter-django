@@ -8,3 +8,8 @@ build/
 .DS_Store
 frontend_flutter/build/
 backend_django/db.sqlite3
+
+# Flutter/Dart generated
+/frontend_flutter/.dart_tool/
+/frontend_flutter/.flutter-plugins-dependencies
+/frontend_flutter/pubspec.lock
